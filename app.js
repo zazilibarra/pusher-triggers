@@ -1,9 +1,13 @@
 'use strict'
-
+const sql = require('mssql');
+const db = require('./db'); 
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 const Pusher = require('pusher');
 
@@ -15,35 +19,36 @@ var pusher = new Pusher({
   encrypted: true
 });
 
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
 
 app.get('/',(req, res)=>{
 	res.send(`API PUSHER TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
 });
 
-app.get('/api/triggerpusher', (req, res) => {
+app.post('/api/triggerpedido', async (req, res) => {
 
-	pusher.trigger('my-channel', 'my-event', {
-	  "message": "test pusher"
-	});
-
-	res.send(`FINISH PUSHER`);
-
-});
-
-app.post('/api/triggerpusher', (req, res) => {
-
-	let _idUsuario = parseInt(req.body.idusuario);
+	let _idUsuario = parseInt(req.body.idusuario);	
 	let _idPedido = req.body.idpedido;
 
-	pusher.trigger('my-channel', 'my-event', {
-	  "message": `${_idPedido} , ${_idUsuario}`
-	});
+	let currentPedido = await db.getPedido(_idPedido);
+	let currentUsuario = await db.getUsuario(_idUsuario);
 
-	res.send(`${_idPedido} , ${_idUsuario}`);
+	console.log(currentUsuario);
+	// console.log(currentPedido);
+
+	let jsonResponse = {
+		message: "update-evidencias",
+		idPedido : _idPedido,
+		delivery: currentPedido.Delivery,
+		idcliente: currentPedido.IDClienteFiscal,
+		usuario:{
+			id:_idUsuario, nombre:currentUsuario.Nombre
+		}
+	}
+
+	pusher.trigger('pedidos', 'update-evidencias', jsonResponse);
+
+	res.send(`FINISH PUSHER`);	
 
 });
-
 
 module.exports = app
