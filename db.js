@@ -45,7 +45,8 @@ async function getViaje (idViaje) {
 
    
     } catch (err) {
-    	console.log(err);      
+    	console.log(err);    
+    	throw err;  
         // ... error checks
     }
 }
