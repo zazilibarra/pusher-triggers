@@ -45,7 +45,7 @@ async function getViaje (idViaje) {
 
    
     } catch (err) {
-    	console.log(err);    
+    	console.log(err.message);    
     	throw err;  
         // ... error checks
     }
@@ -73,5 +73,6 @@ async function getUsuario (idUsuario) {
 
 module.exports = {
 	getPedido,
-	getUsuario
+	getUsuario,
+    getViaje
 }; 

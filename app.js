@@ -59,7 +59,7 @@ app.post('/api/triggerpedido', async (req, res) => {
 app.post('/api/triggerviaje', async (req, res) => {
 
 	let _idUsuario = parseInt(req.body.idusuario);	
-	let _idViaje = req.body.idviaje;
+	let _idViaje = req.body.idviaje;	
 
 	try {
 		let currentViaje = await db.getViaje(_idViaje);
@@ -67,7 +67,7 @@ app.post('/api/triggerviaje', async (req, res) => {
 
 		let jsonResponse = {
 			message: "update-status",
-			idviaje : idviaje,
+			idviaje : _idViaje,
 			folio: currentViaje.Folio,
 			estatus: currentViaje.Status,
 			usuario:{
@@ -80,7 +80,8 @@ app.post('/api/triggerviaje', async (req, res) => {
 		res.send(`FINISH PUSHER VIAJE`);	
 		
 	} catch (err) {
-		res.status(500).send(err);
+		console.log(err);
+		res.status(500).send({message:err.message});
 	}
 
 
