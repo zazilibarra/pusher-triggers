@@ -56,4 +56,28 @@ app.post('/api/triggerpedido', async (req, res) => {
 
 });
 
+app.post('/api/triggerviaje', async (req, res) => {
+
+	let _idUsuario = parseInt(req.body.idusuario);	
+	let _idViaje = req.body.idviaje;
+
+	let currentViaje = await db.getViaje(_idViaje);
+	let currentUsuario = await db.getUsuario(_idUsuario);
+
+	let jsonResponse = {
+		message: "update-status",
+		idviaje : idviaje,
+		folio: currentViaje.Folio,
+		estatus: currentViaje.Status,
+		usuario:{
+			id:_idUsuario, nombre:currentUsuario.Nombre
+		}
+	}
+
+	pusher.trigger('viajes', 'update-status', jsonResponse);
+
+	res.send(`FINISH PUSHER VIAJE`);	
+
+});
+
 module.exports = app
