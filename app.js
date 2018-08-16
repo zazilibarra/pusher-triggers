@@ -30,6 +30,7 @@ app.get('/',(req, res)=>{
 });
 
 //2918
+//2917
 app.get('/api/viaje/:idviaje', async function (req, res) {
 	let idviaje = req.params.idviaje;
 
