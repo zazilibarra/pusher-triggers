@@ -29,6 +29,16 @@ app.get('/',(req, res)=>{
 	res.send(`API PUSHER TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
 });
 
+//2918
+app.get('/api/viaje/:idviaje', async function (req, res) {
+	let idviaje = req.params.idviaje;
+
+	let currentViaje =await db.getViaje(idviaje);
+
+	res.status(200).send(currentViaje);
+
+});
+
 app.post('/api/triggerpedido', async (req, res) => {
 
 	let _idUsuario = parseInt(req.body.idusuario);	
@@ -83,7 +93,6 @@ app.post('/api/triggerviaje', async (req, res) => {
 		console.log(err);
 		res.status(500).send({message:err.message});
 	}
-
 
 });
 
