@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/',(req, res)=>{
-	res.send(`API PUSHER TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
+	res.send(`API PUSHER DEMO TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
 });
 
 app.post('/api/triggerpedido', async (req, res) => {
