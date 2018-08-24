@@ -26,18 +26,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/',(req, res)=>{
-	res.send(`API PUSHER TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
-});
-
-//2918
-//2917
-app.get('/api/viaje/:idviaje', async function (req, res) {
-	let idviaje = req.params.idviaje;
-
-	let currentViaje =await db.getViaje(idviaje);
-
-	res.status(200).send(currentViaje);
-
+	res.send(`API PUSHER DEMO TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
 });
 
 app.post('/api/triggerpedido', async (req, res) => {
