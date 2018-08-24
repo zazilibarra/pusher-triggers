@@ -3,21 +3,22 @@ const sql = require('mssql');
 const db = require('./db'); 
 const express = require('express');
 const bodyParser = require('body-parser');
+const Pusher = require('./pusher');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-const Pusher = require('pusher');
+// const Pusher = require('pusher');
 
-var pusher = new Pusher({
-  appId: '574150',
-  key: 'bddb7b77dc57eb707d5e',
-  secret: '9f5005cfaaf86d331125',
-  cluster: 'us2',
-  encrypted: true
-});
+// var pusher = new Pusher({
+//   appId: '574150',
+//   key: 'bddb7b77dc57eb707d5e',
+//   secret: '9f5005cfaaf86d331125',
+//   cluster: 'us2',
+//   encrypted: true
+// });
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -27,6 +28,14 @@ app.use(function(req, res, next) {
 
 app.get('/',(req, res)=>{
 	res.send(`API PUSHER DEMO TRIGGERS LOGISTIKGO VERSIÓN:${process.env.npm_package_version}`);
+});
+
+app.get('/api/test',(req,res)=>{
+	Pusher.trigger('my-channel', 'my-event', {
+  		"message": "test pusher"
+	});
+
+	res.send(Pusher.config);
 });
 
 app.post('/api/triggerpedido', async (req, res) => {
